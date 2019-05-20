@@ -1,0 +1,40 @@
+.mask-image{
+    width: 130px;
+    height: 130px;
+    background: rgba(0, 0, 0, .5);
+    position: absolute;
+    display: none;
+    transition: all .3s ease-in-out 0s;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.image-product{
+    /* display: inline-block; */
+    width: 130px;
+    height: 130px;
+    /* position: absolute; */
+    /* display: inline; */
+    transition: all .3s ease-in-out 0s;
+    cursor: pointer;
+}
+
+.cover-image:hover > .mask-image{
+    display: block;
+    cursor: pointer;
+}
+
+
+.image-product:hover > .mask-image{
+    display: block;
+    cursor: pointer;
+}
+
+.cover-image{
+    width: 130px;
+    display: inline-block;
+    height: 130px;
+    position: relative;
+    margin-bottom: 3px;
+    /* transition: all .3s ease-in-out 0s; */
+}
