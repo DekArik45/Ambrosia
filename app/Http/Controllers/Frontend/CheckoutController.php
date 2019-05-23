@@ -8,7 +8,9 @@ use Cookie;
 use App\Courier;
 use RajaOngkir;
 use Auth;
+use App\Notifications\Backend\AdminNotif;
 use Alert;
+use App\Admin;
 use Carbon\Carbon;
 use App\Transaction;
 use App\TransactionDetail;
@@ -111,6 +113,9 @@ class CheckoutController extends Controller
         $minutes = 60*60*24*30;
         Cookie::queue(Cookie::make('cart', json_encode($carts), $minutes));
 
+        
+        $admin = Admin::find(1);
+        $admin->notify(new AdminNotif("User ".Auth::guard('customer')->user()->name." Melakukan transaksi "));
         Alert::success('Success Message',"Transaction success");
         return redirect('/profile');
     }

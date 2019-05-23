@@ -18,7 +18,9 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
-                            
+                            {{-- @foreach ($product as $item) --}}
+                                
+                           
                             <address class="find-us">
                                 <span class="md">Data Product</span>
                                     <div class="location-1" style="padding-left: 0px;
@@ -32,9 +34,9 @@
                                         border-radius: 13%;
                                         margin-right: 20px;" src="/{{$product->image_name}}" alt="">
                                     </div>
-        
-                                    <div class="location-1" style="    margin-top: 20px;
-                                    margin-bottom: 10px;">
+                                    
+                                    <div class="location-1" style="    margin-top: 4px;
+                                    margin-bottom: 1px;">
                                         <strong>{{$product->product_name}}</strong>
                                     </div>
         
@@ -63,12 +65,13 @@
                                     </div>
                                 </span>
                             </address>
-                            
+                            {{-- @endforeach --}}
                         </div>
                         <div class="col-md-8">
                             <div class="form-row">
                                 <form id="send-message-form" action="/review" method="POST">
                                     @csrf
+                                    <input type="hidden" name="transaction_detail_id" value="{{$id_detail}}">
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <div class="form-item form-type-name">
                                         <input type="text" readonly placeholder="Your Name" value="{{Auth::guard('customer')->user()->name}}" name="name">

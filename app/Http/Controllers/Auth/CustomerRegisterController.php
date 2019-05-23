@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AdminRegisterController extends Controller
+class CustomerRegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -35,8 +35,8 @@ class AdminRegisterController extends Controller
      * @return void
      */
     public function __construct()
-    {
-        $this->middleware('guest:admin')->except('logout');
+    {   
+        $this->middleware('guest:customer')->except('logout');
     }
 
     public function showRegisterForm()
@@ -74,7 +74,7 @@ class AdminRegisterController extends Controller
         $save->profile_image = $data['profile_image'];
         $save->phone = $data['phone'];
         $save->save();
-
+        
         return redirect('/admin/login');
     }
 }

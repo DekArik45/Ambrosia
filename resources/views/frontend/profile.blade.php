@@ -51,14 +51,15 @@
                                         <th>Sub Total</th>
                                         <th>Shipping</th>
                                         <th>Total</th>
-                                        <th>Bukti Pembayaran</th>
+                                        <th>Bukti</th>
+                                        <th>Succeed</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($transaction as $data)
                                     <tr>
                                         @if ($data->status == 'success')
-                                            <td style="width:50px;">Transaction Success</td>
+                                        <td style="width:50px;">Success</td>
                                         @elseif ($data->status == 'expired')
                                             <td style="width:50px;">Transaction Has Been Expired</td>
                                         @elseif ($data->status == 'delivered')
@@ -95,8 +96,19 @@
                                         @if ($data->proof_of_payment != null)
                                             <td style="text-align:center; width:90px;"><img style="width:75px;" src="{{$data->proof_of_payment}}" alt=""></td>
                                         @else
-                                            <td style="text-align:center;"><button id="upload-bukti" data-item-id="{{$data->id}}" data-toggle="modal" data-target="#modal-input-image" class="btn btn-primary" alt="upload bukti"><i style="font-size:20px;" class="fa fa-upload"></i></button>    </td>
+                                            @if ($data->status == 'expired')
+                                                <td>Cannot Upload Proof Of Payment</td>
+                                            @else
+                                                <td style="text-align:center;"><button id="upload-bukti" data-item-id="{{$data->id}}" data-toggle="modal" data-target="#modal-input-image" class="btn btn-primary" alt="upload bukti"><i style="font-size:20px;" class="fa fa-upload"></i></button></td>
+                                            @endif
                                         @endif
+                                        <td style="text-align:center;">
+                                            @if ($data->status == 'success')
+                                            <a href="/list-review-product/{{$data->id}}" style="padding: 6px 13px;font-size: 11px;" class="awe-btn awe-btn-3 awe-btn-default text-uppercase right">Review</a>
+                                            @elseif($data->status == 'verified' || $data->status == 'delivered')
+                                                <a href="/update-status-sukses/{{$data->id}}" class="btn btn-success"><i class="fa fa-check"></i></a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

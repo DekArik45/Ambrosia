@@ -6,7 +6,10 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-class Customer extends Authenticatable
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\CustomerNotification;
+
+class Customer extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 // The authentication guard for customer
@@ -29,4 +32,11 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'user_id');
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(CustomerNotification::class, 'notifiable')
+                    ->orderBy('created_at', 'desc');
+    }
+    
 }

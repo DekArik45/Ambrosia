@@ -8,10 +8,12 @@ use Carbon\Carbon;
 use Auth;
 use Alert;
 use App\Transaction;
+use App\Admin;
+use App\Notifications\Backend\AdminNotif;
+use App\Product;
 
 class ProfileController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:customer');
@@ -25,6 +27,7 @@ class ProfileController extends Controller
         ->join("products",'transaction_details.product_id','products.id')
         ->select("transaction_details.*","products.product_name",'products.price')
         ->where('transactions.user_id',Auth::guard('customer')->user()->id)
+        ->orderBy('transactions.created_at','DESC')
         ->get();
 
         // return($this->data['transaction_detail']);
@@ -53,6 +56,8 @@ class ProfileController extends Controller
             ]);
 
             Alert::success('Success Message', 'Upload Success')->persistent("Close");
+            $admin = Admin::find(1);
+            $admin->notify(new AdminNotif("User ".Auth::guard('customer')->user()->name." telah meng-upload bukti pembayaran "));
             return redirect('/profile');
         }
         else {
@@ -60,5 +65,31 @@ class ProfileController extends Controller
             return redirect('/profile');
         }
 
+    }
+
+    public function updateStatus($id)
+    {
+        Transaction::find($id)->update([
+            'status' => "success"
+        ]);
+
+        Alert::success('Success Message', 'Update Success')->persistent("Close");
+        
+        return redirect('/profile');
+    }
+
+    public function listReview($id)
+    {
+        $this->data['product'] = Product::join('transaction_details','transaction_details.product_id','products.id')
+        ->join('transactions','transactions.id','transaction_details.transaction_id')
+        ->join('product_images','products.id','product_images.product_id')
+        ->select('products.*','product_images.image_name', 'transaction_details.status','transaction_details.id as id_detail')
+        ->where('transactions.status','success')
+        ->where('transactions.id',$id)
+        ->where('transactions.user_id',Auth::guard('customer')->user()->id)
+        ->groupBy('products.id')
+        ->get();
+        
+        return view('frontend/list_review', $this->data);
     }
 }

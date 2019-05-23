@@ -68,6 +68,9 @@
                     <li class="@yield('about')"><a href="/about">About Us</a></li>
                     @if (Auth::guard('customer')->check())
                         <li class="@yield('profile')"><a href="/profile">My Profile</a></li>
+                        <li class="@yield('logout')"><a href="/customer/logout">Logout</a></li>
+                    @else
+                        <li class="@yield('profile')"><a href="/profile">Login</a></li>
                     @endif
                 </ul>
                 <!-- END / NAV -->

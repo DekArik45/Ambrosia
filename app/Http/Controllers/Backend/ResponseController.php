@@ -22,8 +22,9 @@ class ResponseController extends Controller
         $this->data['response'] = Response::get();
 
         foreach ($this->data['response'] as $key) {
-            $id[] = $key->review_id;    
+            $id[] = $key->review_id;
         }
+        
         $this->data['review_notResponseYet'] = ProductReview::join('products','products.id','product_reviews.product_id')
         ->join('users','users.id','product_reviews.user_id')
         ->select('product_reviews.*','products.product_name','users.name')

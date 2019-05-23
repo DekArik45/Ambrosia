@@ -186,50 +186,6 @@
                                     </div>
                                     <!-- END / COMMENTS -->
 
-                                    <!-- LEAVER YOUR COMMENT -->
-                                    @if (Auth::guard('customer')->check())
-                                        <div id="respond">
-                                            <div class="reply-title">
-                                                <h3 class="xmd text-capitalize">Leaver your comment</h3>
-                                            </div>
-                                            <!-- COMMENT FORM -->
-                                            <form method="POST" action="/review">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{$product_id}}">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-item form-textarea">
-                                                            <textarea placeholder="Your Content" name="content"></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-item form-name">
-                                                            <input type="text" name="name" readonly value="{{Auth::guard('customer')->user()->name}}" placeholder="Your Name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-item form-email">
-                                                            <input type="text" name="email" readonly value="{{Auth::guard('customer')->user()->email}}" placeholder="Your Email">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-item form-email">
-                                                            <input type="number" max="5" min="0" name="rate" placeholder="Your Rate 0 - 5">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-4">
-                                                        <div class="form-actions">
-                                                            <input type="submit" value="Post this review" class="awe-btn awe-btn-2 awe-btn-default text-uppercase">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                            <!-- END / COMMENT FORM -->
-                                            
-                                        </div>    
-                                    @endif
                                     
                                     <!-- END / LEAVER YOUR COMMENT -->
                                 </div>

@@ -5,6 +5,8 @@ namespace App;
 // use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Notifications\Notifiable;
+use App\AdminNotification;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 class Admin extends Authenticatable
 {
@@ -23,5 +25,11 @@ class Admin extends Authenticatable
     public function response_admin()
     {
         return $this->hasMany(Response::class, 'admin_id');
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(AdminNotification::class, 'notifiable')
+                    ->orderBy('created_at', 'desc');
     }
 }

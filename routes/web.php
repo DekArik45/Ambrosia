@@ -11,7 +11,10 @@
 |
 */
 
-// Route::get('/home', function () {
+// Route::get('/', function () {
+    
+    // User::find(1)->notify(new AdminNotify);
+
 //     return view('layouts.app');
 // });
 
@@ -35,15 +38,22 @@ Route::post('/shipping','Frontend\CheckoutController@shipping');
 
 Route::get('/profile','Frontend\ProfileController@index');
 Route::put('/upload_bukti/{id}','Frontend\ProfileController@uploadBukti');
+Route::get('/update-status-sukses/{id}','Frontend\ProfileController@updateStatus');
+Route::get('/list-review-product/{id}','Frontend\ProfileController@listReview');
 
 Route::get('/review/{id}','Frontend\ProductReviewController@productReview');
 Route::post('/review','Frontend\ProductReviewController@store');
+
 
 Route::prefix('customer')->group(function() {
     Route::get('/login', 'Auth\CustomerLoginController@showLoginForm')->name('customer.login');
     Route::post('/login', 'Auth\CustomerLoginController@login')->name('customer.login.submit');
     Route::get('/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
     Route::get('/','Frontend\HomeController@index')->name('customer.home');
+
+    // Email confirmation 
+    Route::get('confirmation/resend', 'Auth\CustomerRegisterController@resend');
+    Route::get('confirmation/{id}/{token}', 'Auth\RegisterController@confirm');
     // Route::get('/dashboard', function () {
     //     return view('layouts.app');
     // });

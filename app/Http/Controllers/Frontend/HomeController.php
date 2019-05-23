@@ -9,6 +9,8 @@ use App\ProductImage;
 
 class HomeController extends Controller
 {
+    
+
     public function index()
     {
         $this->data['product'] = Product::join('product_category_details','products.id','product_category_details.product_id')

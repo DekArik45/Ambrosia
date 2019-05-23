@@ -58,6 +58,6 @@ class CustomerLoginController extends Controller
 
     public function logout() {
         Auth::guard('customer')->logout();
-        return redirect("/customer/login");
+        return redirect("/");
       }
 }

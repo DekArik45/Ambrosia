@@ -38,6 +38,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+            $this->middleware('guest:admin');
+            $this->middleware('guest:customer');
     }
 
     /**
@@ -53,6 +55,29 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+    }
+
+    public function showAdminRegisterForm()
+    {
+        return view('auth.register', ['url' => 'admin']);
+    }
+
+    public function showCustomerRegisterForm()
+    {
+        return view('auth.customer-register', ['url' => 'customer']);
+    }
+
+    protected function createCustomer(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $customer = Customer::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'profile_image' => $request['image'],
+            'status' => '1',
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('auth.customer-login');
     }
 
     /**

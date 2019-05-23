@@ -135,7 +135,7 @@
                                                                         <span class="price xsm" style="text-align: right; font-size:18px;
                                                                         float: right;">Rp. {{number_format($data->price,0,',','.')}}</span><br/>
                                                                     @endif
-                                                                    <a href="/review/{{$data->id}}" style="padding: 6px 13px;font-size: 11px;" class="awe-btn awe-btn-3 awe-btn-default text-uppercase right">Review</a>
+                                                                    
                                                                 </div>
                                                                 @if ($data->product_rate == '')
                                                                     <div class="highlight">Not Rated Yet</div>
