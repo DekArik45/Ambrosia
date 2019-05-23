@@ -123,15 +123,27 @@
                                                                     @endforeach
 
                                                                     @if ($check != 0)
-                                                                        <input type="hidden" id="discount-{{$loop->iteration}}" value="{{$diskon_produk}}">
-                                                                        <input type="hidden" id="selling-{{$loop->iteration}}" value="{{$check}}">
+                                                                        @if ($count == 1)
+                                                                            <input type="hidden" id="discount-{{$loop->iteration}}" value="{{$diskon_produk}}">
+                                                                            <input type="hidden" id="selling-{{$loop->iteration}}" value="{{$check}}">
+                                                                        @else
+                                                                            <input type="hidden" id="discount-{{$loop->iteration.$count}}" value="{{$diskon_produk}}">
+                                                                            <input type="hidden" id="selling-{{$loop->iteration.$count}}" value="{{$check}}">
+                                                                        @endif
+                                                                        
                                                                         <span class="price xsm" style="text-align: right;
                                                                         float: right;
                                                                         text-decoration: line-through red;">Rp. {{number_format($data->price, 0,',','.')}}</span><br/>
                                                                         <span class="price xsm"  style="font-size:18px; float: right;">Rp. {{number_format($check,0,',','.')}}</span><br/>
                                                                     @else
-                                                                        <input type="hidden" id="discount-{{$loop->iteration}}" value="0">
-                                                                        <input type="hidden" id="selling-{{$loop->iteration}}" value="{{$data->price}}">
+                                                                        @if ($count == 1)
+                                                                            <input type="hidden" id="discount-{{$loop->iteration}}" value="0">
+                                                                            <input type="hidden" id="selling-{{$loop->iteration}}" value="{{$data->price}}">
+                                                                        @else
+                                                                            <input type="hidden" id="discount-{{$loop->iteration.$count}}" value="0">
+                                                                            <input type="hidden" id="selling-{{$loop->iteration.$count}}" value="{{$data->price}}">
+                                                                        @endif
+                                                                        
                                                                         <span class="price xsm" style="text-align: right; font-size:18px;
                                                                         float: right;">Rp. {{number_format($data->price,0,',','.')}}</span><br/>
                                                                     @endif

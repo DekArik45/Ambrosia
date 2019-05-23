@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>AdminLTE 2 | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -64,6 +65,41 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown notifications-menu">
+            <a href="#" class="dropdown-toggle" id="notif" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              @php
+                  $count = 0;
+              @endphp
+              @foreach (Auth::guard('admin')->user()->unreadNotifications as $notification)
+                  @php
+                      $count += 1;
+                  @endphp
+              @endforeach
+              @if ($count == 0)
+              @else
+                <span class="label label-warning">{{$count}}</span>
+              @endif
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have {{$count}} notifications</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+
+                <ul class="menu">
+                  @foreach (Auth::guard('admin')->user()->unreadNotifications as $notification)
+                    <li>
+                      {{-- <a href="#"> --}}
+                        {!! $notification->data !!}
+                      {{-- </a> --}}
+                    </li>
+                  @endforeach
+                  
+                </ul>
+              </li>
+            </ul>
+          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -71,6 +107,8 @@
               <span class="hidden-xs" style="text-transform:capitalize;">{{Auth::guard('admin')->user()->name}}</span>
             </a>
             <ul class="dropdown-menu">
+              
+              <!-- Tasks: style can be found in dropdown.less -->
               <!-- User image -->
               <li class="user-header">
                 <img src="{{asset('backend/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
@@ -212,6 +250,28 @@
 <!-- AdminLTE App -->
 <script src="{{asset('backend/dist/js/adminlte.min.js')}}"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.8.7/dist/sweetalert2.all.min.js"></script> --}}
+
+<script>
+  $(document).on('click', "#notif", function() {
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+      $.ajax({
+          type: 'GET',
+          url: '/admin/clear-notif',
+          success: function(data){
+              console.log("Success "+data);
+          },
+          error: function (data, textStatus, errorThrown) {
+              console.log(data);
+          },
+      });
+
+    });
+</script>
+
 @yield('script')
 </body>
 </html>

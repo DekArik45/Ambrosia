@@ -115,7 +115,7 @@ class CheckoutController extends Controller
 
         
         $admin = Admin::find(1);
-        $admin->notify(new AdminNotif("User ".Auth::guard('customer')->user()->name." Melakukan transaksi "));
+        $admin->notify(new AdminNotif("<a href='/admin/transaksi'><i class='fa fa-users text-aqua'></i> User ".Auth::guard('customer')->user()->name." Melakukan transaksi </a>"));
         Alert::success('Success Message',"Transaction success");
         return redirect('/profile');
     }

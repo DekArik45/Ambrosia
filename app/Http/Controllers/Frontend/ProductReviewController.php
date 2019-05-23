@@ -87,7 +87,7 @@ class ProductReviewController extends Controller
         
         $admin = Admin::find(1);
         $product_name = Product::find($request->product_id)->select('product_name')->first();
-        $admin->notify(new AdminNotif("Terdapat Review Pada Product ".$product_name->product_name." oleh ".$request->name));
+        $admin->notify(new AdminNotif("<a href='/admin/response'><i class='fa fa-users text-aqua'></i> Terdapat Review Pada Product ".$product_name->product_name." oleh ".$request->name."</a>"));
 
         Alert::success('Success Message', 'Review Success')->persistent("Close");
 

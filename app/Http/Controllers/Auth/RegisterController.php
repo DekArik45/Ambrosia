@@ -48,37 +48,89 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function register(Request $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        /** @var User $user */
+        $validatedData = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'imageupload' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
         ]);
+        $image = $request->file('imageupload');
+        $image_name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/user_profile_images');
+        $image->move($destinationPath, $image_name);
+        $validatedData['profile_image'] = $image_name;
+        // return $validatedData;
+        try {
+            $validatedData['password']        = bcrypt(array_get($validatedData, 'password'));
+            $validatedData['activation_code'] = str_random(30).time();
+            $user                             = app(Customer::class)->create($validatedData);
+        } catch (\Exception $exception) {
+            return "unable to create new user ".$exception;
+            logger()->error($exception);
+            return redirect()->back()->with('error', 'Unable to create new user.');
+        }
+        // return "registered succesfully";
+        // $user->notify(new UserRegisteredSuccessfully($user));
+        return redirect()->route('viewlogin')->with('registersuccess', 'Successfully created a new account. Please check your email and activate your account.');
+    }
+    /**
+     * Activate the user with given activation code.
+     * @param string $activationCode
+     * @return string
+     */
+    public function activateUser(string $activationCode)
+    {
+        try {
+            $user = app(Customer::class)->where('activation_code', $activationCode)->first();
+            if (!$user) {
+                return "The code does not exist for any user in our system.";
+            }
+            $user->status = 1;
+            $user->email_verified_at = Carbon::now();
+            $user->activation_code = null;
+            $user->save();
+            return redirect('/viewlogin')->with( ['verifysuccess' => 'Account Verification Successfull ! Now you can login with your account.'] );;
+        } catch (\Exception $exception) {
+            logger()->error($exception);
+            return "Whoops! something went wrong.";
+        }
+        return redirect()->to('/viewlogin');
     }
 
-    public function showAdminRegisterForm()
-    {
-        return view('auth.register', ['url' => 'admin']);
-    }
+    // protected function validator(array $data)
+    // {
+    //     return Validator::make($data, [
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
+    //     ]);
+    // }
 
-    public function showCustomerRegisterForm()
-    {
-        return view('auth.customer-register', ['url' => 'customer']);
-    }
+    // public function showAdminRegisterForm()
+    // {
+    //     return view('auth.register', ['url' => 'admin']);
+    // }
 
-    protected function createCustomer(Request $request)
-    {
-        $this->validator($request->all())->validate();
-        $customer = Customer::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'profile_image' => $request['image'],
-            'status' => '1',
-            'password' => Hash::make($request['password']),
-        ]);
-        return redirect()->intended('auth.customer-login');
-    }
+    // public function showCustomerRegisterForm()
+    // {
+    //     return view('auth.customer-register', ['url' => 'customer']);
+    // }
+
+    // protected function createCustomer(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+    //     $customer = Customer::create([
+    //         'name' => $request['name'],
+    //         'email' => $request['email'],
+    //         'profile_image' => $request['image'],
+    //         'status' => '1',
+    //         'password' => Hash::make($request['password']),
+    //     ]);
+    //     return redirect()->intended('auth.customer-login');
+    // }
 
     /**
      * Create a new user instance after a valid registration.
@@ -86,13 +138,13 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
-    {
+    // protected function create(array $data)
+    // {
         // return User::create([
         //     'name' => $data['name'],
         //     'email' => $data['email'],
         //     'password' => Hash::make($data['password']),
         // ]);
-        return "asd";
-    }
+    //     return "asd";
+    // }
 }

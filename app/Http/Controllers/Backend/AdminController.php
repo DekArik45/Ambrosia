@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Auth;
 class AdminController extends Controller
 {
     /**
@@ -24,8 +24,11 @@ class AdminController extends Controller
     public function index()
     {
 
-        
-
         return view('backend.dashboard');
+    }
+
+    public function clearNotif(){
+        
+        Auth::guard('admin')->user()->unreadNotifications()->update(['read_at' => now()]);
     }
 }

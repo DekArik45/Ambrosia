@@ -57,7 +57,7 @@ class ProfileController extends Controller
 
             Alert::success('Success Message', 'Upload Success')->persistent("Close");
             $admin = Admin::find(1);
-            $admin->notify(new AdminNotif("User ".Auth::guard('customer')->user()->name." telah meng-upload bukti pembayaran "));
+            $admin->notify(new AdminNotif("<a href='/admin/transaksi'><i class='fa fa-users text-aqua'></i> User ".Auth::guard('customer')->user()->name." telah meng-upload bukti pembayaran </a>"));
             return redirect('/profile');
         }
         else {

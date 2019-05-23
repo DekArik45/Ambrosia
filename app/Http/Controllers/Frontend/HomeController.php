@@ -28,4 +28,8 @@ class HomeController extends Controller
 
         return view('frontend.index', $this->data);
     }
+
+    public function clearNotif(){
+        Auth::guard('customer')->user()->unreadNotifications()->update(['read_at' => now()]);
+    }
 }

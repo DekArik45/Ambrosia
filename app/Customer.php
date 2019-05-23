@@ -19,6 +19,10 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'name','email','profile_image','status','email_verified_at','password',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     protected $hidden = [
         'password', 'remember_token',
     ];

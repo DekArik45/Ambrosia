@@ -61,6 +61,8 @@ Route::prefix('customer')->group(function() {
 
 
 Route::prefix('admin')->group(function() {
+    
+
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
     Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
@@ -68,6 +70,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/register', 'Auth\AdminRegisterController@create')->name('admin.register.submit');
 
     Route::get('/', 'Backend\AdminController@index')->name('admin.home');
+    Route::get('/clear-notif', 'Backend\AdminController@clearNotif');
     
     Route::get('/transaksi','Backend\TransaksiController@index');
     Route::put('/transaksi/{id}','Backend\TransaksiController@updateStatus');
