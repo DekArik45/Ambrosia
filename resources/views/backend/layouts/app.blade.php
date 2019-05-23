@@ -159,8 +159,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="@yield('transaksi_perbulan')"><a href="/admin/transaksi_perbulan"><i class="fa fa-circle-o"></i> Transaksi perBulan</a></li>
-            <li class="@yield('transaksi_pertahun')"><a href="/admin/transaksi_pertahun"><i class="fa fa-circle-o"></i> Transaksi perTahun</a></li>
+            <li class="@yield('transaksi_perbulan')"><a href="/admin/report-perbulan"><i class="fa fa-circle-o"></i> Transaksi perBulan</a></li>
+            <li class="@yield('transaksi_pertahun')"><a href="/admin/report-pertahun"><i class="fa fa-circle-o"></i> Transaksi perTahun</a></li>
           </ul>
         </li>
       </ul>

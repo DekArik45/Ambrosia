@@ -35,26 +35,6 @@
                     </div>
                 </div>
             </div>
-            @if ($no_response != "1")
-                <div class="box box-primary">
-                    <form action="/admin/response" method="POST">
-                        @csrf
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Response</h3>
-                        </div>
-                        <input type="hidden" name="review_id" value="{{$review->id}}">
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>Content</label>
-                                <textarea class="form-control" name="content" rows="5" placeholder="Enter . . ."></textarea>
-                            </div>
-                        </div>
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            @endif
         </div>
         <div class="col-xs-6">
             <div class="box box-primary">

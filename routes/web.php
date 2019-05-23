@@ -95,5 +95,9 @@ Route::prefix('admin')->group(function() {
     Route::get('/detail-response/{id}','Backend\ResponseController@showDetail');
     Route::post('/response','Backend\ResponseController@store');
     Route::get('/detail-already-response/{id}','Backend\ResponseController@showAlreadyResponse');
+
+    //report
+    Route::get('/report-pertahun','Backend\LaporanController@perTahun');
+    Route::get('/report-perbulan','Backend\LaporanController@perBulan');
 });
 

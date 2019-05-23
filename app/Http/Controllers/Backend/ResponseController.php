@@ -20,25 +20,42 @@ class ResponseController extends Controller
     {
         
         $this->data['response'] = Response::get();
-
+        $id[] = "";
         foreach ($this->data['response'] as $key) {
             $id[] = $key->review_id;
         }
-        
-        $this->data['review_notResponseYet'] = ProductReview::join('products','products.id','product_reviews.product_id')
+        if ($id == null) {
+            $this->data['review_notResponseYet'] = ProductReview::join('products','products.id','product_reviews.product_id')
+        ->join('users','users.id','product_reviews.user_id')
+        ->select('product_reviews.*','products.product_name','users.name')
+        ->get();
+        }
+        else {
+            $this->data['review_notResponseYet'] = ProductReview::join('products','products.id','product_reviews.product_id')
         ->join('users','users.id','product_reviews.user_id')
         ->select('product_reviews.*','products.product_name','users.name')
         ->whereNotIn('product_reviews.id', $id)
         ->get();
-
+        }
+        
+        $data[] = "";
         foreach ($this->data['review_notResponseYet'] as $item) {
             $data[] = $item->id;
         }
-        $this->data['review_response'] = ProductReview::join('products','products.id','product_reviews.product_id')
+
+        if ($data == null) {
+            $this->data['review_response'] = ProductReview::join('products','products.id','product_reviews.product_id')
+        ->join('users','users.id','product_reviews.user_id')
+        ->select('product_reviews.*','products.product_name','users.name')
+        ->get();
+        }
+        else {
+            $this->data['review_response'] = ProductReview::join('products','products.id','product_reviews.product_id')
         ->join('users','users.id','product_reviews.user_id')
         ->select('product_reviews.*','products.product_name','users.name')
         ->whereNotIn('product_reviews.id', $data)
         ->get();
+        }
         
         return view('backend.response', $this->data);
     }

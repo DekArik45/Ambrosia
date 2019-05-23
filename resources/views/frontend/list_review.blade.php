@@ -32,7 +32,7 @@
                                                     </div>
                                                     <div class="prices">
                                                         @if ($data->status == '1')
-                                                            <a href="#" style="padding: 6px 13px;font-size: 11px;" class="awe-btn awe-btn-3 awe-btn-default text-uppercase right">Already Review</a>
+                                                            <a href="javascript:void(0)" style="padding: 6px 13px;font-size: 11px;" class="awe-btn awe-btn-3 awe-btn-default text-uppercase right">Already Review</a>
                                                         @else
                                                             <a href="/review/{{$data->id_detail}}" style="padding: 6px 13px;font-size: 11px;" class="awe-btn awe-btn-3 awe-btn-default text-uppercase right">Review</a>
                                                         @endif

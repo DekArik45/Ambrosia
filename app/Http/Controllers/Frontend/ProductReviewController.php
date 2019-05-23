@@ -62,7 +62,11 @@ class ProductReviewController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
+        // return $request;
+        TransactionDetail::where('id',$request->transaction_detail_id)->update([
+            'status' => '1',
+        ]);
+        
         
         $review = new ProductReview;
         $review->product_id = $request->product_id;
@@ -79,10 +83,8 @@ class ProductReviewController extends Controller
             'product_rate' => $data->product_rate,
         ]);
 
-        TransactionDetail::find($request->transaction_detail_id)->update([
-            'status' => '1'
-        ]);
-
+        
+        
         $admin = Admin::find(1);
         $product_name = Product::find($request->product_id)->select('product_name')->first();
         $admin->notify(new AdminNotif("Terdapat Review Pada Product ".$product_name->product_name." oleh ".$request->name));
