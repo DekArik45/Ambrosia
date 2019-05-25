@@ -23,6 +23,20 @@ class ProfileController extends Controller
     {
 
         $this->data['transaction'] = Transaction::where('user_id',Auth::guard('customer')->user()->id)->get();
+        $data_expired = Transaction::where('user_id', Auth::guard('customer')->user()->id)
+        ->where('status','unverified')
+        ->get();
+        
+        $this->data['now'] = Carbon::now()->format('Y-m-d H:m:s');
+        foreach ($data_expired as $key) {
+            if ($key->timeout < $this->data['now']) {
+               
+                Transaction::where('id',$key->id)->update([
+                    'status' => 'expired'
+                ]);
+            }
+        }
+
         $this->data['transaction_detail'] = Transaction::join("transaction_details",'transactions.id','transaction_details.transaction_id')
         ->join("products",'transaction_details.product_id','products.id')
         ->select("transaction_details.*","products.product_name",'products.price')

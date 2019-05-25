@@ -50,7 +50,7 @@ Route::prefix('customer')->group(function() {
     Route::post('/login', 'Auth\CustomerLoginController@login')->name('customer.login.submit');
     Route::get('/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
     Route::get('/','Frontend\HomeController@index')->name('customer.home');
-
+    Route::get('/clear-notif', 'Frontend\HomeController@clearNotif');
     // Email confirmation 
     Route::get('confirmation/resend', 'Auth\CustomerRegisterController@resend');
     Route::get('confirmation/{id}/{token}', 'Auth\RegisterController@confirm');

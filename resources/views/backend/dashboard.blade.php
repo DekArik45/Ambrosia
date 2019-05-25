@@ -23,9 +23,9 @@
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h3>150</h3>
+          <h3>{{$product->total_product}}</h3>
 
-          <p>Jumlah Transaksi</p>
+          <p>Jumlah Produk</p>
         </div>
         <div class="icon">
           <i class="ion ion-bag"></i>
@@ -38,7 +38,7 @@
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
-          <h3>53<sup style="font-size: 20px">%</sup></h3>
+          <h3>{{number_format($transaction->total_transaksi,0,',','.')}}</h3>
 
           <p>Transaction</p>
         </div>
@@ -53,7 +53,7 @@
       <!-- small box -->
       <div class="small-box bg-yellow">
         <div class="inner">
-          <h3>44</h3>
+          <h3>{{$user->jumlah_user}}</h3>
 
           <p>User</p>
         </div>
@@ -68,9 +68,9 @@
       <!-- small box -->
       <div class="small-box bg-red">
         <div class="inner">
-          <h3>65</h3>
+          <h3>{{$transaction->jumlah_transaksi}}</h3>
 
-          <p>Unique Visitors</p>
+          <p>Jumlah Transaksi</p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>
@@ -82,7 +82,35 @@
   </div>
   <!-- /.row (main row) -->
 
+  <div class="col-md-12">
+   <!-- LINE CHART -->
+   <div class="box box-info">
+      <div class="box-header with-border">
+        <h3 class="box-title">Line Chart</h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <div class="box-body chart-responsive">
+        <div class="chart" id="line-chart" style="height: 300px;"></div>
+      </div>
+      <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+  </div>
+  <!-- /.col (LEFT) -->
+
 </section>
+<div class="row">
+
+  
+
+</div>
+
   <!-- /.content -->
 @endsection
 
@@ -96,4 +124,36 @@
 <script src="{{asset('backend/bower_components/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
 <!-- datepicker -->
 <script src="{{asset('backend/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+@php
+    $i = 1;
+@endphp
+<script>
+  $(function () {
+    "use strict";
+
+
+    var line = new Morris.Line({
+      element: 'line-chart',
+      resize: true,
+      data: [
+        @foreach ($chart as $item)
+          @if($jumlah->jumlah == $i)
+        {y: '{{$item->tahun}} Q{{$item->bulan}}', item1: {{$item->total_transaksi}}}
+          @else
+        {y: '{{$item->tahun}} Q{{$item->bulan}}', item1: {{$item->total_transaksi}}},
+          @endif
+          @php
+            $i++;
+          @endphp
+        @endforeach
+      ],
+      xkey: 'y',
+      ykeys: ['item1'],
+      labels: ['Item 1'],
+      lineColors: ['#3c8dbc'],
+      hideHover: 'auto'
+    });
+    
+  })
+</script>
 @endsection

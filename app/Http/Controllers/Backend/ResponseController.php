@@ -8,6 +8,8 @@ use App\Response;
 use App\ProductReview;
 use Alert;
 use Auth;
+use App\Customer;
+use App\Notifications\Frontend\UserNotif;
 
 class ResponseController extends Controller
 {
@@ -72,13 +74,20 @@ class ResponseController extends Controller
 
     public function store(Request $request)
     {
+       
         $response = new Response;
         $response->review_id = $request->review_id;
         $response->admin_id = Auth::guard('admin')->user()->id;
         $response->content = $request->content;
         $response->save();
 
+        $review_user = ProductReview::where('id',$request->review_id)
+        ->first();
+        $user = Customer::find($review_user->user_id);
+        $user->notify(new UserNotif("<a href='/product/".$review_user->product_id."'>Admin Already response your review</a>"));
+
         Alert::success('Success Message', 'Response Success')->persistent("Close");
+
         return redirect('/admin/response');
     }
 

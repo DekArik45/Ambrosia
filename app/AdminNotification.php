@@ -9,10 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class AdminNotification extends Model
 {
     use Notifiable;
-
     protected $table = 'admin_notifications';
     protected $primary_key = 'id';
-    
     protected $guarded = [];
-    
 }

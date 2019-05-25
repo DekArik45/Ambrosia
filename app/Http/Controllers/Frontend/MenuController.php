@@ -18,7 +18,6 @@ class MenuController extends Controller
     {
 
         $this->data['product'] = Product::join('product_images','products.id','product_images.product_id')
-        
         ->join('product_category_details','product_category_details.product_id','products.id')
         ->join('product_categories','product_categories.id','product_category_details.category_id')
         ->select('products.*','product_images.*','product_categories.category_name')

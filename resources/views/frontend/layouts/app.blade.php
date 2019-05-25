@@ -72,7 +72,48 @@
                     @else
                         <li class="@yield('profile')"><a href="/profile">Login</a></li>
                     @endif
+
+                    <li id="notif" class="dropdown notifications-menu">
+                            <button style="pointer:cursor; background:transparent;" id="notif" class="btn dropdown-toggle" id="notif" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                @php
+                                    $count = 0;
+                                @endphp
+                                @if (Auth::guard('customer')->check())
+                                    @foreach (Auth::guard('customer')->user()->unreadNotifications as $notification)
+                                        @php
+                                            $count += 1;
+                                        @endphp
+                                    @endforeach
+                                @endif
+                                
+                                @if ($count == 0)
+                                @else
+                                    <span class="label label-warning">{{$count}}</span>
+                                @endif
+                            </button>
+                            <ul id="menu-notif" class="dropdown-menu">
+                                <li class="header">You have {{$count}} notifications</li>
+                                <li>
+                                <!-- inner menu: contains the actual data -->
+                
+                                <ul class="menu">
+                                    @if (Auth::guard('customer')->check())
+                                        @foreach (Auth::guard('customer')->user()->unreadNotifications as $notification)
+                                        <li>
+                                            {{-- <a href="#"> --}}
+                                            {!! $notification->data !!}
+                                            {{-- </a> --}}
+                                        </li>
+                                        @endforeach
+                                    @endif                                    
+                                </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    
                 </ul>
+                
                 <!-- END / NAV -->
                 <!-- MINICART -->
                 <div class="minicart-wrap">
@@ -134,7 +175,9 @@
 <script type="text/javascript" src="{{asset('frontend/js/lib/jquery.magnific-popup.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('frontend/js/lib/jquery.parallax-1.1.3.js')}}"></script>
 <script type="text/javascript" src="{{asset('frontend/js/lib/retina.min.js')}}"></script>
-
+<script src="{{asset('backend/bower_components/fastclick/lib/fastclick.js')}}"></script>
+<script>
+  </script>
 <script>
 
 function formatRupiah(angka, prefix){
@@ -155,6 +198,27 @@ function formatRupiah(angka, prefix){
 }
 
 $(document).ready(function() {
+    $('#notif').click(function() {
+        $('#notif').addClass('open');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'GET',
+            url: '/customer/clear-notif',
+            success: function(data){
+                console.log("Success "+data);
+            },
+            error: function (data, textStatus, errorThrown) {
+                console.log(data);
+            },
+        });
+    })
+
+    
     // var jsonData = "";
     $('#cart_top').click(function(){
         // alert("adf");
